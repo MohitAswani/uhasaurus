@@ -164,51 +164,99 @@ class Bird(Obstacle):
 
 
 def main():
+
+    # Global Variables for game_speed, x_pos_bg, y_pos_bg, points, obstacles
     global game_speed, x_pos_bg, y_pos_bg, points, obstacles
+
+    # Initializing the game
     run = True
     clock = pygame.time.Clock()
+
+    # Creating the Dinosaur
     player = Dinosaur()
+
+    # Creating the Clouds
     cloud = Cloud()
+
+    # Set the game speed, x_pos_bg, y_pos_bg, points, obstacles
     game_speed = 20
     x_pos_bg = 0
     y_pos_bg = 380
     points = 0
-    font = pygame.font.Font('freesansbold.ttf', 20)
     obstacles = []
+
+    # Load the font
+    font = pygame.font.Font('freesansbold.ttf', 20)
+
+    # Death count
     death_count = 0
 
+    # Function for score
     def score():
+
+        # Global variables for points, game_speed
         global points, game_speed
         points += 1
+
+        # Increasing the game speed for every 100 points
         if points % 100 == 0:
             game_speed += 1
 
+        # Rendering the text
         text = font.render("Points: " + str(points), True, (0, 0, 0))
+
+        # Displaying the text
         textRect = text.get_rect()
         textRect.center = (1000, 40)
+
+        # Blit the text to the screen
         SCREEN.blit(text, textRect)
 
+    # Function for background
     def background():
+
+        # Global variables for x_pos_bg, y_pos_bg
         global x_pos_bg, y_pos_bg
+
+        # Loading the background image
         image_width = BG.get_width()
+
+        # Blit the background image twice
         SCREEN.blit(BG, (x_pos_bg, y_pos_bg))
         SCREEN.blit(BG, (image_width + x_pos_bg, y_pos_bg))
+
+        # Moving the background image
         if x_pos_bg <= -image_width:
             SCREEN.blit(BG, (image_width + x_pos_bg, y_pos_bg))
             x_pos_bg = 0
+
+        # Moving the background image
         x_pos_bg -= game_speed
 
+
+    # Game Loop
     while run:
+
+        # Event Loop
         for event in pygame.event.get():
+            
+            # Listening for the quit event
             if event.type == pygame.QUIT:
                 run = False
 
+        # Fill the screen with white color
         SCREEN.fill((255, 255, 255))
+
+        # Get the user input
         userInput = pygame.key.get_pressed()
 
+        # Draw the Dinosaur
         player.draw(SCREEN)
+
+        # Update the Dinosaur
         player.update(userInput)
 
+        # Create the obstacles
         if len(obstacles) == 0:
             if random.randint(0, 2) == 0:
                 obstacles.append(SmallCactus(SMALL_CACTUS))
@@ -217,48 +265,85 @@ def main():
             elif random.randint(0, 2) == 2:
                 obstacles.append(Bird(BIRD))
 
+        # Draw the obstacles
         for obstacle in obstacles:
+
+            # Draw the obstacles
             obstacle.draw(SCREEN)
             obstacle.update()
+
+            # Collision detection
             if player.dino_rect.colliderect(obstacle.rect):
                 pygame.time.delay(2000)
                 death_count += 1
+
+                # Call the menu function
                 menu(death_count)
 
+        # Calling the background function for drawing and moving the background image
         background()
 
+        # Drawing and moving the clouds
         cloud.draw(SCREEN)
         cloud.update()
 
+        # Calling the score function
         score()
 
+        # Updating the display
+        # Clock tick 30 frames per second
         clock.tick(30)
+
+        # Updating the display
         pygame.display.update()
 
 
+# Function for displaying the menu
 def menu(death_count):
+
+    # Global variables for points
     global points
+
+    # Initializing the game
     run = True
+
+    # Game Loop
     while run:
+
+        # Fill the screen with white color
         SCREEN.fill((255, 255, 255))
         font = pygame.font.Font('freesansbold.ttf', 30)
 
+        # Displaying the text
         if death_count == 0:
             text = font.render("Press any Key to Start", True, (0, 0, 0))
         elif death_count > 0:
             text = font.render("Press any Key to Restart", True, (0, 0, 0))
+            
+            # Displaying the score
             score = font.render("Your Score: " + str(points), True, (0, 0, 0))
             scoreRect = score.get_rect()
             scoreRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 50)
             SCREEN.blit(score, scoreRect)
+        
+        
         textRect = text.get_rect()
         textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
+
+        # Blit the text to the screen
         SCREEN.blit(text, textRect)
+
+        # Blit to display the running dinosaur
         SCREEN.blit(RUNNING[0], (SCREEN_WIDTH // 2 - 20, SCREEN_HEIGHT // 2 - 140))
         pygame.display.update()
+
+        # Event Loop
         for event in pygame.event.get():
+
+            # Listening for the quit event
             if event.type == pygame.QUIT:
                 run = False
+            # Listening for the key press event
             if event.type == pygame.KEYDOWN:
                 main()
 
