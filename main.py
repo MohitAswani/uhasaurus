@@ -36,14 +36,15 @@ class Dinosaur:
     JUMP_VEL = 8.5
 
     def __init__(self):
+        #loading images
         self.duck_img = DUCKING
         self.run_img = RUNNING
         self.jump_img = JUMPING
-
+        #initial state
         self.dino_duck = False
         self.dino_run = True
         self.dino_jump = False
-
+        # animation variables
         self.step_index = 0
         self.jump_vel = self.JUMP_VEL
         self.image = self.run_img[0]
@@ -52,6 +53,7 @@ class Dinosaur:
         self.dino_rect.y = self.Y_POS
 
     def update(self, userInput):
+        #updating state of dinasaur
         if self.dino_duck:
             self.duck()
         if self.dino_run:
@@ -59,9 +61,10 @@ class Dinosaur:
         if self.dino_jump:
             self.jump()
 
+
         if self.step_index >= 10:
             self.step_index = 0
-
+        #checking key press
         if userInput[pygame.K_UP] and not self.dino_jump:
             self.dino_duck = False
             self.dino_run = False
@@ -76,6 +79,7 @@ class Dinosaur:
             self.dino_jump = False
 
     def duck(self):
+        #updating image for duck animation
         self.image = self.duck_img[self.step_index // 5]
         self.dino_rect = self.image.get_rect()
         self.dino_rect.x = self.X_POS
@@ -83,6 +87,7 @@ class Dinosaur:
         self.step_index += 1
 
     def run(self):
+        #updating image for running animation
         self.image = self.run_img[self.step_index // 5]
         self.dino_rect = self.image.get_rect()
         self.dino_rect.x = self.X_POS
@@ -90,10 +95,13 @@ class Dinosaur:
         self.step_index += 1
 
     def jump(self):
+        #updating image for jumping animation
         self.image = self.jump_img
         if self.dino_jump:
+            #considering velocity aspect
             self.dino_rect.y -= self.jump_vel * 4
             self.jump_vel -= 0.8
+        #cheking if jump ends    
         if self.jump_vel < - self.JUMP_VEL:
             self.dino_jump = False
             self.jump_vel = self.JUMP_VEL
@@ -101,21 +109,25 @@ class Dinosaur:
     def draw(self, SCREEN):
         SCREEN.blit(self.image, (self.dino_rect.x, self.dino_rect.y))
 
-
+# dispaly  clouds on the screen 
 class Cloud:
+    #initializes new cloud object
     def __init__(self):
         self.x = SCREEN_WIDTH + random.randint(800, 1000)
         self.y = random.randint(50, 100)
+        # selecting image 
         self.image = CLOUD
         self.width = self.image.get_width()
 
     def update(self):
+        # updating the position of cloud
         self.x -= game_speed
         if self.x < -self.width:
             self.x = SCREEN_WIDTH + random.randint(2500, 3000)
             self.y = random.randint(50, 100)
 
     def draw(self, SCREEN):
+        #draw cloud image on screen
         SCREEN.blit(self.image, (self.x, self.y))
 
 
