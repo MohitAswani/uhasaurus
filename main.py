@@ -6,7 +6,7 @@ pg.init()
 # Global Constants
 #Set Screen Dimensions
 window_height = 500
-window_width = 1000
+window_width = 1150
 
 # Initializing Obstacles
 
