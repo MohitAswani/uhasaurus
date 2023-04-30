@@ -35,70 +35,70 @@ crouching_anim = [pg.image.load(os.path.join("Assets/Dino", "DinoDuck1.png")),
 
 BG = pg.image.load(os.path.join("Assets/Other", "Track.png"))
 
-# dispaly  clouds on the SCREEN_VAR 
+# display  clouds on the SCREEN_VAR 
 class Cloud:
     #initializes new cloud object
-    def __init__(self):
-        self.x = window_width + random.randint(800, 1000)
-        self.y = random.randint(50, 100)
+    def __init__(obj):
+        obj.x = window_width + random.randint(800, 1000)
+        obj.y = random.randint(50, 100)
         # selecting image 
-        self.image = clouds_imgs
-        self.width = self.image.get_width()
+        obj.image = clouds_imgs
+        obj.width = obj.image.get_width()
 
-    def update(self):
+    def update(obj):
         # updating the position of cloud
-        self.x -= gspeed
-        if self.x < -self.width:
-            self.x = window_width + random.randint(2500, 3000)
-            self.y = random.randint(50, 100)
+        obj.x -= gspeed
+        if obj.x < -obj.width:
+            obj.x = window_width + random.randint(2500, 3000)
+            obj.y = random.randint(50, 100)
 
-    def draw(self, SCREEN_VAR):
+    def draw(obj, Variable_scr):
         #draw cloud image on SCREEN_VAR
-        SCREEN_VAR.blit(self.image, (self.x, self.y))
+        Variable_scr.blit(obj.image, (obj.x, obj.y))
 
 
 class Obstacle:
-    def __init__(self, image, type):
-        self.image = image
-        self.type = type
-        self.rect = self.image[self.type].get_rect()
-        self.rect.x = window_width
+    def __init__(obj, img, type):
+        obj.image = img
+        obj.type = type
+        obj.rect = obj.image[obj.type].get_rect()
+        obj.rect.x = window_width
 
-    def update(self):
-        self.rect.x -= gspeed
-        if self.rect.x < -self.rect.width:
+    def update(obj):
+        obj.rect.x -= gspeed
+        if obj.rect.x < -obj.rect.width:
             obs.pop()
 
-    def draw(self, SCREEN_VAR):
-        SCREEN_VAR.blit(self.image[self.type], self.rect)
+    def draw(obj, variable_scr):
+        variable_scr.blit(obj.image[obj.type], obj.rect)
 
 
 class SmallCactus(Obstacle):
-    def __init__(self, image):
-        self.type = random.randint(0, 2)
-        super().__init__(image, self.type)
-        self.rect.y = 325
+    def __init__(obj, img):
+        obj.type = random.randint(0, 2)
+        super().__init__(img, obj.type)
+        obj.rect.y = 325
 
 
 class LargeCactus(Obstacle):
-    def __init__(self, image):
-        self.type = random.randint(0, 2)
-        super().__init__(image, self.type)
-        self.rect.y = 300
+    def __init__(obj, img):
+        obj.type = random.randint(0, 2)
+        super().__init__(img, obj.type)
+        obj.rect.y = 300
 
 
 class Bird(Obstacle):
-    def __init__(self, image):
-        self.type = 0
-        super().__init__(image, self.type)
-        self.rect.y = 250
-        self.index = 0
+    def __init__(obj, img):
+        obj.type = 0
+        super().__init__(img, obj.type)
+        obj.rect.y = 250
+        obj.idx = 0
 
-    def draw(self, SCREEN_VAR):
-        if self.index >= 9:
-            self.index = 0
-        SCREEN_VAR.blit(self.image[self.index//5], self.rect)
-        self.index += 1
+    def draw(obj, Variable_scr):
+        if obj.idx >= 9:
+            obj.idx = 0
+        Variable_scr.blit(obj.image[obj.idx//5], obj.rect)
+        obj.idx += 1
 
 
 def main():
