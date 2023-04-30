@@ -61,43 +61,43 @@ class Obstacle:
     def __init__(obj, img, type):
         obj.image = img
         obj.type = type
-        obj.Rectan = obj.image[obj.type].get_rect()
-        obj.Rectan.x = window_width
+        obj.rect = obj.image[obj.type].get_rect()
+        obj.rect.x = window_width
 
     def update(obj):
-        obj.Rectan.x -= gspeed
-        if obj.Rectan.x < -obj.Rectan.width:
+        obj.rect.x -= gspeed
+        if obj.rect.x < -obj.rect.width:
             obs.pop()
 
     def draw(obj, variable_scr):
-        variable_scr.blit(obj.image[obj.type], obj.Rectan)
+        variable_scr.blit(obj.image[obj.type], obj.rect)
 
 
 class SmallCactus(Obstacle):
     def __init__(obj, img):
         obj.type = random.randint(0, 2)
         super().__init__(img, obj.type)
-        obj.Rectan.y = 325
+        obj.rect.y = 325
 
 
 class LargeCactus(Obstacle):
     def __init__(obj, img):
         obj.type = random.randint(0, 2)
         super().__init__(img, obj.type)
-        obj.Rectan.y = 300
+        obj.rect.y = 300
 
 
 class Bird(Obstacle):
     def __init__(obj, img):
         obj.type = 0
         super().__init__(img, obj.type)
-        obj.Rectan.y = 250
+        obj.rect.y = 250
         obj.idx = 0
 
     def draw(obj, Variable_scr):
         if obj.idx >= 9:
             obj.idx = 0
-        Variable_scr.blit(obj.image[obj.idx//5], obj.Rectan)
+        Variable_scr.blit(obj.image[obj.idx//5], obj.rect)
         obj.idx += 1
 
 
