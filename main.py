@@ -23,7 +23,7 @@ large_cactus = [pg.image.load(os.path.join("Assets/Cactus", "LargeCactusImg1.png
 birds_imgs = [pg.image.load(os.path.join("Assets/Bird", "BirdImg1.png")),
         pg.image.load(os.path.join("Assets/Bird", "BirdImg2.png"))]
 
-clouds_imgs = pg.image.load(os.path.join("Assets/Other", "Cloud.png"))
+clouds_imgs = pg.image.load(os.path.join("Assets/Other", "CloudImg.png"))
 
 SCREEN_VAR = pg.display.set_mode((window_width, window_height))
 
@@ -33,7 +33,7 @@ hopping_anim = pg.image.load(os.path.join("Assets/Dino", "DinoJump.png"))
 crouching_anim = [pg.image.load(os.path.join("Assets/Dino", "DinoDuck1.png")),
            pg.image.load(os.path.join("Assets/Dino", "DinoDuck2.png"))]
 
-BG = pg.image.load(os.path.join("Assets/Other", "Track.png"))
+BG = pg.image.load(os.path.join("Assets/Other", "TrackImg.png"))
 
 # display  clouds on the SCREEN_VAR 
 class Cloud:
@@ -73,14 +73,14 @@ class Obstacle:
         variable_scr.blit(obj.image[obj.type], obj.rect)
 
 
-class SmallCactus(Obstacle):
+class Small_cactus(Obstacle):
     def __init__(obj, img):
         obj.type = random.randint(0, 2)
         super().__init__(img, obj.type)
         obj.rect.y = 325
 
 
-class LargeCactus(Obstacle):
+class Large_cactus(Obstacle):
     def __init__(obj, img):
         obj.type = random.randint(0, 2)
         super().__init__(img, obj.type)
@@ -199,9 +199,9 @@ def main():
         # Create the obstacle
         if len(obs) == 0:
             if random.randint(0, 2) == 0:
-                obs.append(SmallCactus(tiny_cactus))
+                obs.append(Small_cactus(tiny_cactus))
             elif random.randint(0, 2) == 1:
-                obs.append(LargeCactus(large_cactus))
+                obs.append(Large_cactus(large_cactus))
             elif random.randint(0, 2) == 2:
                 obs.append(Bird(birds_imgs))
 
